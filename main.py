@@ -77,6 +77,7 @@ def main_menu():
 def register():
     print("\n=-=-=-=-=-= REGISTRASI AKUN =-=-=-=-=-=")
     
+    valid = False
     while not valid:
         sudah_dipakai = False
         username = input("Masukkan Username: ")
@@ -94,6 +95,7 @@ def register():
         else:
             valid = True
     
+    valid = False
     while not valid:
         password = input("Masukkan Password (minimal 8 karakter): ")
         
