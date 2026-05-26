@@ -1,16 +1,16 @@
-id_kumulatif = 1
+id_kumulatif = 2
 
 data_user = [
     {
         "id": 0,
-        "username": "1",
-        "password": "1",
+        "username": "Miftah",
+        "password": "abcd1234",
         "buku": []
     },
     {
         "id": 1,
-        "username": "2",
-        "password": "2",
+        "username": "Akhdani",
+        "password": "efgh5678",
         "buku": []
     }
 ]
@@ -77,7 +77,7 @@ def main_menu():
 def register():
     print("\n=-=-=-=-=-= REGISTRASI AKUN =-=-=-=-=-=")
     
-    while True:
+    while not valid:
         sudah_dipakai = False
         username = input("Masukkan Username: ")
         
@@ -92,9 +92,9 @@ def register():
         elif " " in username:
             print("Username tidak boleh mengandung spasi\n")
         else:
-            break
+            valid = True
     
-    while True:
+    while not valid:
         password = input("Masukkan Password (minimal 8 karakter): ")
         
         if len(password) < 8:
@@ -102,10 +102,9 @@ def register():
         elif " " in password:
             print("Password tidak boleh mengandung spasi\n")
         else: 
-            break
+            valid = True
     
     global id_kumulatif
-    id_kumulatif += 1
     data_user.append(
         {
             "id": id_kumulatif,
@@ -114,13 +113,15 @@ def register():
             "buku": []   
         }
     )
+    id_kumulatif += 1
+    print("Akun berhasil dibuat, silahkan login")
     
 def login():
     print("\n=-=-=-=-=-= LOGIN KE SISTEM =-=-=-=-=-=")
     
     id_login = None
-    percobaan_login = 3
     akses = False
+    percobaan_login = 3
     login_berhasil = False
     while True: 
         if percobaan_login == 0:
@@ -131,17 +132,17 @@ def login():
         
         for user in data_user:
             if username == user["username"] and password == user["password"]:
-                print("Login berhasil")
                 id_login = user["id"]
                 login_berhasil = True
+                print("Login berhasil")
                 break
                 
         if login_berhasil == True:
             akses = True
             break
         else:
-            print("Username dan Password salah, silahkan coba lagi")
             percobaan_login -= 1
+            print("Username dan Password salah, silahkan coba lagi")
         
     return akses, id_login
         
@@ -173,14 +174,14 @@ def borrow_book(user_id, param_buku):
         for buku in data_buku:
             if pilihan == f"{buku["id"] + 1}":
                 if buku["tersedia"]:
-                    print("Buku berhasil dipinjam")
-                    buku["tersedia"], selesai = False, True
+                    buku["tersedia"], selesai, valid = False, True, True
                     param_buku.append(buku["id"])
-                    valid = True
+                    print(f"Buku {buku["judul"]} berhasil dipinjam")
                     break
                 else:
-                    print("Buku tidak tersedia, pilih buku lainnya")
                     valid = True
+                    print("Buku tidak tersedia, pilih buku lainnya")
+                    
         if not selesai and not valid:
             print("Buku tidak valid, silahkan coba lagi")
                 
@@ -207,7 +208,6 @@ def return_book(user_id, param_buku):
         while not selesai:
             pilihan = int(input("\nMasukkan ID buku yang ingin dikembalikan: ")) - 1
             if 0 <= pilihan < len(param_buku):
-                print("Buku berhasil dikembalikan")
                 buku_kembali = param_buku[pilihan]
                 selesai = True
                 break
@@ -217,6 +217,7 @@ def return_book(user_id, param_buku):
         for buku in data_buku:
             if buku["id"] == buku_kembali:
                 buku["tersedia"] = True
+                print(f"Buku {buku["judul"]} berhasil dikembalikan")
                 
         param_buku.pop(pilihan)        
         data_user[user_id]["buku"] = param_buku
