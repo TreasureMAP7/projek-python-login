@@ -15,4 +15,6 @@ Aplikasi CLI sederhana berbasis Python yang bertemakan sistem login dan register
 - Python 3.14.3
 
 ## Cara Menjalankan
+```bash
 python main.py
+```
